@@ -188,9 +188,9 @@ impl<T> StoredValue<T> {
     /// Panics if there is no current reactive runtime, or if the
     /// stored value has been disposed.
     #[track_caller]
-    pub fn update_value(&self, f: impl FnOnce(&mut T)) {
+    pub fn update_value<O>(&self, f: impl FnOnce(&mut T) -> O) -> O {
         self.try_update_value(f)
-            .expect("could not set stored value");
+            .expect("could not set stored value")
     }
 
     /// Same as [`Self::update_value`], but returns [`Some(O)`] if the
